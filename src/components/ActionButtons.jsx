@@ -1,17 +1,22 @@
 import { useRef } from "react";
 import { formatTime, unformatTime } from "../modules/functions";
-export default function ActionButtons({ startTimer, isFirstTimer, isTimerRunning, currentTimer, timerId, updateTime, updateCurrentTimer }) {
+export default function ActionButtons({ handleMaxTime, currentPhase, startTimer, isFirstTimer, isTimerRunning, currentTimer, timerId, updateTime, updateCurrentTimer }) {
     const buttonRef = useRef(null)
-    
+    const passMaxTime = (addedTime) => {
+        const maxTime = addedTime;
+        handleMaxTime(maxTime);
+    };
+
     function resetTimer() {
+        passMaxTime(1500)
         if (timerId.current) {
             clearInterval(timerId.current);
             timerId.current = null;
-            updateTime(1500);
-            updateCurrentTimer(formatTime(1500));
+            updateTime([1500, currentPhase]);
+            updateCurrentTimer(prevState => [formatTime(1500), prevState[1]]);
         } else {
-            updateTime(1500);
-            updateCurrentTimer(formatTime(1500));
+            updateTime([1500, currentPhase]);
+            updateCurrentTimer(prevState => [formatTime(1500), prevState[1]]);
         }
     }
 
@@ -30,7 +35,7 @@ export default function ActionButtons({ startTimer, isFirstTimer, isTimerRunning
             if (timerId.current) {
                 clearInterval(timerId.current);
                 timerId.current = null;
-                updateTime(unformatTime(currentTimer));
+                updateTime([unformatTime(currentTimer[0]), currentPhase]);
             }
         } else {
             // as it isn't running, resume timer
