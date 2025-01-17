@@ -1,8 +1,14 @@
-# React + Vite
+# Pomodoro Timer ⏳
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+https://gianniorfini.github.io/pomodoro/
 
-Currently, two official plugins are available:
+A simple yet effective Pomodoro Timer built to boost productivity and manage time effectively. Whether you’re working, studying, or tackling personal projects, this timer is designed to help you stay focused and efficient.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features 🚀
+	•	Dark and Light Modes: Seamlessly switch between themes for your comfort.
+	•	Progress Tracker: Visually track your progress through the session.
+	•	Minimalist UI: Focused on simplicity and ease of use.
+
+ Acknowledgments 💡
+	•	Inspired by the Pomodoro Technique by Francesco Cirillo.
+	•	Designed as a roadmap.sh project.
