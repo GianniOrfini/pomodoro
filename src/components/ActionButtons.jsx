@@ -12,11 +12,15 @@ export default function ActionButtons({ handleMaxTime, currentPhase, startTimer,
         if (timerId.current) {
             clearInterval(timerId.current);
             timerId.current = null;
-            updateTime([1500, currentPhase]);
-            updateCurrentTimer(prevState => [formatTime(1500), prevState[1]]);
+            updateTime([1500, 0]);
+            updateCurrentTimer(prevState => [formatTime(1500), 0]);
+            buttonRef.current.textContent = "Start";
+            isTimerRunning.current = false;
         } else {
-            updateTime([1500, currentPhase]);
-            updateCurrentTimer(prevState => [formatTime(1500), prevState[1]]);
+            updateTime([1500, 0]);
+            updateCurrentTimer(prevState => [formatTime(1500), 0]);
+            buttonRef.current.textContent = "Start";
+            isTimerRunning.current = false;
         }
     }
 

@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { formatTime, unformatTime } from "./modules/functions";
 import date from 'date-and-time';
 import './App.css';
+import DarkModeToggle from "./components/DarkModeToggle";
 import MoreTimeButton from "./components/MoreTimeButton";
 import ActionButtons from "./components/ActionButtons";
 
 function App() {
+  let finishedAudio = new Audio("drum-sound1.mp3");
+
 // add a settings tab for the user to change the default times
   const now = new Date();
   let focusMode = 1500;
@@ -31,7 +34,7 @@ function App() {
     timerId.current = setInterval(() => {
       setTimeInSeconds(prevTime => {
         if (prevTime[0] === 0) {
-
+          finishedAudio.play()
           return [
             prevTime[1] === -1 ? focusMode :
             prevTime[1] === 0 ? shortBreak :
@@ -71,31 +74,18 @@ function App() {
     }
   }
 
-// not working yet
-  let darkMode = true;
-  // const darkMode = () => {
-  //   return localStorage.getItem("mode") ? [JSON.parse(localStorage.getItem("timer")), JSON.parse(localStorage.getItem("phase"))] : [focusMode, 0]};
-
-  function toggleDayNightMode() {
-    console.log("toggled")
-    darkMode ? darkMode = false : darkMode = true
-    console.log(darkMode)
-  }
-
   useEffect(() => {
     setCurrentTimer(prevState => [formatTime(timeInSeconds[0]), prevState[1]]);
     localStorage.setItem('timer', JSON.stringify(timeInSeconds[0]));
     localStorage.setItem('phase', JSON.stringify(timeInSeconds[1]));
   }, [timeInSeconds[0]]);
   return (
-    <>
+    <main id="main">
       <header>
-        <p>{date.format(now, 'dddd, D MMM hh:mm A.') + headerText()}</p>
-        <button onClick={toggleDayNightMode}>
-          <img src="sun.svg" alt="" />
-        </button>
+          <p>{date.format(now, 'dddd, D MMM hh:mm A.') + headerText()}</p>
+          <DarkModeToggle />
       </header>
-      <main className={darkMode ? "dark-mode" : "light-mode"}>
+      <section className="app-main">
         <section className="mode-container">
           <h2>{timeInSeconds[1] === -1 ? "short break" :
             timeInSeconds[1] === 0 ? "focus" :
@@ -108,7 +98,7 @@ function App() {
             timeInSeconds[1] === 7 ? "long break" : "error"}</h2>
         </section>
         <section className="time-container">
-          <label className={darkMode ? "dark-mode" : "light-mode"} htmlFor="countdown">{currentTimer[0]}</label>
+          <label htmlFor="countdown">{currentTimer[0]}</label>
           <progress id="countdown" value={(maxValue - timeInSeconds[0]) / maxValue} />
         </section>
         <section className="additional-time-container">
@@ -140,8 +130,8 @@ function App() {
             handleMaxTime={handleMaxTime}
           />
         </section>
-      </main>
-    </>
+      </section>
+    </main>
   );
 }
 
