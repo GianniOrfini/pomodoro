@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { formatTime, unformatTime } from "./modules/functions";
-import date from 'date-and-time';
+import { formatTime } from "./modules/functions";
 import './App.css';
-import DarkModeToggle from "./components/DarkModeToggle";
+import ModeText from "./components/ModeText";
 import MoreTimeButton from "./components/MoreTimeButton";
 import ActionButtons from "./components/ActionButtons";
+import Header from './components/Header';
 
 function App() {
   let finishedAudio = new Audio("drum-sound1.mp3");
 
 // add a settings tab for the user to change the default times
-  const now = new Date();
   let focusMode = 1500;
   let shortBreak = 300;
   let longBreak = 900;
@@ -25,8 +24,6 @@ function App() {
   let isFirstTimer = useRef(true);
 
   const currentPhase = timeInSeconds[1];
-
-
 
   function startTimer() {
     if (timerId.current) return; // allows only one timer
@@ -52,8 +49,6 @@ function App() {
     }, 1000);
   }
   
-
-  let valueFromChild = '';
   let maxValue = currentTimer[1];
 
   const handleMaxTime = (value) => {
@@ -61,46 +56,22 @@ function App() {
     maxValue = value;
   };
 
-  const headerText = () => {
-    const hour = date.format(now, 'H')
-    if (hour >= 0 && hour <= 5) {
-      return " Good madrugada!"
-    } else if (hour >= 6 && hour <= 11) {
-      return " Good morning!"
-    } else if (hour >= 12 && hour <= 17) {
-      return " Good afternoon!"
-    } else if (hour >= 18 && hour <= 23) {
-      return " Good night!"
-    }
-  }
-
   useEffect(() => {
     setCurrentTimer(prevState => [formatTime(timeInSeconds[0]), prevState[1]]);
     localStorage.setItem('timer', JSON.stringify(timeInSeconds[0]));
     localStorage.setItem('phase', JSON.stringify(timeInSeconds[1]));
   }, [timeInSeconds[0]]);
+
   return (
     <main id="main">
-      <header>
-          <p>{date.format(now, 'dddd, D MMM hh:mm A.') + headerText()}</p>
-          <DarkModeToggle />
-      </header>
+      <Header />
       <section className="app-main">
-        <section className="mode-container">
-          <h2>{timeInSeconds[1] === -1 ? "short break" :
-            timeInSeconds[1] === 0 ? "focus" :
-            timeInSeconds[1] === 1 ? "short break" :
-            timeInSeconds[1] === 2 ? "focus" :
-            timeInSeconds[1] === 3 ? "short break" :
-            timeInSeconds[1] === 4 ? "focus" :
-            timeInSeconds[1] === 5 ? "short break" :
-            timeInSeconds[1] === 6 ? "focus" : 
-            timeInSeconds[1] === 7 ? "long break" : "error"}</h2>
-        </section>
+        <ModeText currentPhase={currentPhase}/>
         <section className="time-container">
           <label htmlFor="countdown">{currentTimer[0]}</label>
           <progress id="countdown" value={(maxValue - timeInSeconds[0]) / maxValue} />
         </section>
+
         <section className="additional-time-container">
           {moreTimeButtonArray.map(button => {
             return (
@@ -117,19 +88,18 @@ function App() {
             )
           })}
         </section>
-        <section className="action-container">
-          < ActionButtons 
-            currentTimer={currentTimer}
-            timerId={timerId}
-            updateTime={setTimeInSeconds}
-            updateCurrentTimer={setCurrentTimer}
-            isFirstTimer={isFirstTimer}
-            isTimerRunning={isTimerRunning}
-            startTimer={startTimer}
-            currentPhase={currentPhase}
-            handleMaxTime={handleMaxTime}
-          />
-        </section>
+
+        < ActionButtons 
+          currentTimer={currentTimer}
+          timerId={timerId}
+          updateTime={setTimeInSeconds}
+          updateCurrentTimer={setCurrentTimer}
+          isFirstTimer={isFirstTimer}
+          isTimerRunning={isTimerRunning}
+          startTimer={startTimer}
+          currentPhase={currentPhase}
+          handleMaxTime={handleMaxTime}
+        />
       </section>
     </main>
   );

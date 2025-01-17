@@ -6,7 +6,6 @@ export default function ActionButtons({ handleMaxTime, currentPhase, startTimer,
         const maxTime = addedTime;
         handleMaxTime(maxTime);
     };
-
     function resetTimer() {
         passMaxTime(1500)
         if (timerId.current) {
@@ -25,7 +24,6 @@ export default function ActionButtons({ handleMaxTime, currentPhase, startTimer,
     }
 
     function pauseTimer() {
-        console.log(isFirstTimer.current)
         if (isFirstTimer.current) {
             // change from start to pause
             buttonRef.current.textContent = "Pause";
@@ -50,9 +48,9 @@ export default function ActionButtons({ handleMaxTime, currentPhase, startTimer,
     }
     
     return (
-        <>
+        <section className="action-container">
             <button ref={buttonRef} onClick={() => pauseTimer(0)}>Start</button>
             <button onClick={resetTimer} className="reset">Reset</button>
-        </>
+        </section>
     )
 }
